@@ -12,12 +12,12 @@ function login() {
 
           <form action='' method='GET' id='login-form'>
             <div className='username'>
-              <label htmlFor=''></label>
+              <label htmlFor=''><i class="fa-solid fa-user"></i></label>
               <input type='username' id='username' placeholder='Username'/>
             </div>
 
             <div className='password'>
-              <label htmlFor='password' ></label>
+              <label htmlFor='password' ><i class="fa-solid fa-lock"></i></label>
               <input type='text' id='password' placeholder='Password'/>
             </div>
 

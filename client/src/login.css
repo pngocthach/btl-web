@@ -1,15 +1,54 @@
 .login {
     display: flex;
     height: 100%;
+    background-image: url('./login-background.jpeg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
 }
 
+i {
+    font-size: 25px;
+    line-height: 100%;
+    color: rgba(255,255,255,.5);
+
+}
 label {
     display: inline-block;
-    width: 80px;
+    margin-right: 10px;
+    
 }
 input {
     margin: 0 20px;
-    width: 300px;
+    width: 250px;
+    height: 25px;
+    color: rgba(255,255,255,.5);
+    font-size: 16px;
+}
+
+input::placeholder {
+    color: rgba(255,255,255,.5);
+    font-size: 16px;
+}
+
+button {
+    margin: 0 auto;
+    margin-top: 10px;
+    padding: 10px;
+    color: rgba(255,255,255,.5);
+    font-size: 16px;
+    border-radius: 50px;
+    
+    display: block;
+    background-color: rgba(255,255,255,.1);
+    background:  transparent;
+    width: 350px;
+    border: 1px solid rgba(255,255,255,.5);
+}
+
+button:active {
+    background-color: rgba(255,255,255,.5);
 }
 
 .login-image {
@@ -26,24 +65,33 @@ input {
     align-items: center;
     justify-content: center;
 }
+
+.login-wapper h1 {
+    margin-top: 60px;
+    color: rgba(255,255,255,.5);
+
+}
 .login-wapper {
     text-align: center;
-    height: 440px;
-    width: 400px;
+    height: 500px;
+    width: 450px;
     margin: auto 0;
     border: 2px solid rgba(255,255,255,.5);
     background: transparent;
     backdrop-filter: blur(20px);
+    border-radius: 25px;
 }
 
 
 .username ,.password {
     border: none;
-    box-shadow: 0px 0px 5px 0px ;
+    box-shadow: 0px 0px 5px 0px rgba(255,255,255,.5);
     border-radius: 50px;
     margin: 20px auto;
-    padding: 10px;
-    display: block;
+    padding: 10px 0px;
+    display: inline-block;
+    width: 350px;
+    /* text-align: center; */
 }
 
 .username input:focus-visible, .password input:focus-visible {
@@ -53,10 +101,9 @@ input {
 
 .username input, .password input {
     display: inline-block;
-    border-top: none;
-    border-right: none;
-    border-left: none;
-    border-bottom: 1px solid rgba(100, 99, 99, 0.8);
+    border: none;
+    margin: auto 0;
+    background: transparent;
 
 }
 
