@@ -1,4 +1,5 @@
 import './App.css';
+import login from './login.js';
 
 
 // test
@@ -9,9 +10,9 @@ fetch("http://localhost:5000/api")
 
 function App() {
   return (
-    <div className="App">
-
-    </div>
+    <>
+      {login()}
+    </>
   );
 }
 
