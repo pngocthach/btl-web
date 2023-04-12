@@ -1,0 +1,4 @@
+COMMAND     PID           USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+Postman   31392 kiennguyentuan   52u  IPv6 0xfa46e2205fece3a5      0t0  TCP localhost:61660->localhost:hbci (ESTABLISHED)
+node      36961 kiennguyentuan   23u  IPv6 0xfa46e2205fecaf25      0t0  TCP *:hbci (LISTEN)
+node      36961 kiennguyentuan   35u  IPv6 0xfa46e2205fec98a5      0t0  TCP localhost:hbci->localhost:61660 (ESTABLISHED)

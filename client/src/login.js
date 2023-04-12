@@ -4,7 +4,12 @@ import './index'
 function login() {
   return (
     <div className='login'>
-      <div className='login-image'></div>
+      <div className='login-image'>
+        <div className='login-image-logo'></div>
+        <div className='login-title'>
+          Trung tâm đăng kiểm
+        </div>
+      </div>
       <div className='login-container'>
         <div className='login-wapper'>
 

@@ -1,7 +1,19 @@
-.login {
-    display: flex;
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+html, body {
+    margin: 0;
     height: 100%;
-    background-image: url('./login-background.jpeg');
+
+}
+
+#root {
+    height: 100%;
+}
+
+.login {
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    font-weight: bold;
+    height: 100%;
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
@@ -11,7 +23,7 @@
 i {
     font-size: 25px;
     line-height: 100%;
-    color: rgba(255,255,255,.5);
+    color: rgba(0,0,0,.5);
 
 }
 label {
@@ -23,12 +35,12 @@ input {
     margin: 0 20px;
     width: 250px;
     height: 25px;
-    color: rgba(255,255,255,.5);
+    color: rgba(0,0,0,.5);
     font-size: 16px;
 }
 
 input::placeholder {
-    color: rgba(255,255,255,.5);
+    color: rgba(0,0,0,.5);
     font-size: 16px;
 }
 
@@ -36,28 +48,47 @@ button {
     margin: 0 auto;
     margin-top: 10px;
     padding: 10px;
-    color: rgba(255,255,255,.5);
+    color: rgba(0,0,0,.5);
     font-size: 16px;
     border-radius: 50px;
     
     display: block;
-    background-color: rgba(255,255,255,.1);
+    background-color: rgba(0,0,0,.1);
     background:  transparent;
     width: 350px;
-    border: 1px solid rgba(255,255,255,.5);
+    border: 1px solid rgba(0,0,0,.5);
 }
 
 button:active {
-    background-color: rgba(255,255,255,.5);
+    background-color: rgba(0,0,0,.5);
 }
 
 .login-image {
     flex: 1;
-    margin: 30px;
-    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.login-title {
+    margin-top: 30px;
+    font-size: 30px;
+    text-transform:uppercase;
+    border-bottom: 2px solid grey;
+    color: rgba(0,0,0,.6)
+}
+.login-image-logo {
+    margin: 0 auto;
+    background-image: url('./login-image.webp');
+    background-color: rgb(200,200,200);
+    height: 200px;
+    width: 200px;
+    background-repeat: no-repeat;
     background-size: cover;
-    background-image: url('./login-image.jpg');
-    border-radius: 30px;
+    border-radius: 500px;
+    padding: 50px;
+    box-shadow: 0px 0px 10px 10px rgba(122,122,122,.5);
+
 }
 .login-container {
     flex: 1;
@@ -68,7 +99,7 @@ button:active {
 
 .login-wapper h1 {
     margin-top: 60px;
-    color: rgba(255,255,255,.5);
+    color: rgba(0,0,0,.5);
 
 }
 .login-wapper {
@@ -76,7 +107,7 @@ button:active {
     height: 500px;
     width: 450px;
     margin: auto 0;
-    border: 2px solid rgba(255,255,255,.5);
+    border: 2px solid rgba(0,0,0,.5);
     background: transparent;
     backdrop-filter: blur(20px);
     border-radius: 25px;
@@ -85,7 +116,7 @@ button:active {
 
 .username ,.password {
     border: none;
-    box-shadow: 0px 0px 5px 0px rgba(255,255,255,.5);
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,.5);
     border-radius: 50px;
     margin: 20px auto;
     padding: 10px 0px;
@@ -97,13 +128,14 @@ button:active {
 .username input:focus-visible, .password input:focus-visible {
     outline-offset: 0px;
     outline: none;
+    background-color: rgba(255,255,255,0.5);
 }
 
 .username input, .password input {
     display: inline-block;
     border: none;
     margin: auto 0;
-    background: transparent;
-
+    /* background: transparent; */
+    background-color: rgba(255,255,255,0.5);
 }
 
