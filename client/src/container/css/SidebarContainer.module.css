@@ -1,0 +1,19 @@
+.Sidebar {
+    background-color: white;
+    flex: 1;
+    flex-direction: column;
+}
+
+.logout {
+    display: inline-block;
+    justify-self: end;
+    position: absolute;
+    bottom: 50px;
+}
+
+.Feature {
+    position: absolute;
+    top: 100px;
+}
+
+
