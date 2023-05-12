@@ -1,6 +1,6 @@
 import style from './signup.module.css'
-import TextField from '../components/textField/textField';
-import Button from '../components/button/button';
+import TextField from '../../components/textField';
+import Button from '../../components/button';
 
 function Signup() {
     return (

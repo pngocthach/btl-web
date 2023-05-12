@@ -45,7 +45,7 @@
 
 .image {
     display: block;
-    content: url(./logo.png);
+    content: url(../../img/logo.png);
     height: 75px;
     margin: auto;
     padding-top: 120px;

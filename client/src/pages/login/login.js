@@ -1,6 +1,6 @@
 import style from './login.module.css';
-import Button from '../components/button/button.js'
-import TextField from '../components/textField/textField';
+import Button from '../../components/button';
+import TextField from '../../components/textField';
 
 function Login() {
   return (
