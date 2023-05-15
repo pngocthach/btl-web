@@ -2,13 +2,13 @@ const express = require("express");
 const router = express.Router();
 const RegistrationController = require("../controller/registration-controller");
 
-router.post("/signup", RegistrationController.signup());
+router.get("/", RegistrationController.getAll());
 
-router.post("/login", RegistrationController.login());
+router.post("/", RegistrationController.create());
 
-router.patch("/update/:id", RegistrationController.update());
+router.get("/:id", RegistrationController.findById());
 
-router.get("/loggedInUser", RegistrationController.loggedInUser());
+router.patch("/:id", RegistrationController.update());
 
 router.delete("/:id", RegistrationController.delete());
 

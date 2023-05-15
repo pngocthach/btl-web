@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const RegCenterController = require("../controller/cars-controller");
+const RegCenterController = require("../controller/regCenter-controller");
 
 router.post("/signup", RegCenterController.signup());
 
