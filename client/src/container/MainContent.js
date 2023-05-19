@@ -1,9 +1,9 @@
 import styles from "./css/MainContent.module.css";
-import IconButton from "../component/IconButton";
+import IconButton from "../components/IconButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { icon } from "@fortawesome/fontawesome-svg-core/import.macro";
-import Search from "../component/Search";
-import User from "../component/User";
+import Search from "../components/Search";
+import User from "../components/User";
 
 export default function MainContent() {
   const username = "kien";
