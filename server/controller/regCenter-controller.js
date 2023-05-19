@@ -1,7 +1,5 @@
-// const Car = require("../model/car-model");
-
-class RegCenterController {
-  signup = () => {
+class OwnerController {
+  getAll = () => {
     return (req, res, next) => {
       res.status(200).json({
         success: true,
@@ -9,7 +7,15 @@ class RegCenterController {
     };
   };
 
-  login = () => {
+  create = () => {
+    return (req, res, next) => {
+      res.status(200).json({
+        success: true,
+      });
+    };
+  };
+
+  findById = () => {
     return (req, res, next) => {
       res.status(200).json({
         success: true,
@@ -18,14 +24,6 @@ class RegCenterController {
   };
 
   update = () => {
-    return (req, res, next) => {
-      res.status(200).json({
-        success: true,
-      });
-    };
-  };
-
-  loggedInUser = () => {
     return (req, res, next) => {
       res.status(200).json({
         success: true,
@@ -42,4 +40,4 @@ class RegCenterController {
   };
 }
 
-module.exports = new RegCenterController();
+module.exports = new OwnerController();

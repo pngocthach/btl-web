@@ -1,5 +1,3 @@
-// const Car = require("../model/car-model");
-
 class OwnerController {
   getAll = () => {
     return (req, res, next) => {

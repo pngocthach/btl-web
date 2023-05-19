@@ -1,5 +1,5 @@
-class RegistrationController {
-  getAll = () => {
+class RegCenterController {
+  signup = () => {
     return (req, res, next) => {
       res.status(200).json({
         success: true,
@@ -7,15 +7,7 @@ class RegistrationController {
     };
   };
 
-  create = () => {
-    return (req, res, next) => {
-      res.status(200).json({
-        success: true,
-      });
-    };
-  };
-
-  findById = () => {
+  login = () => {
     return (req, res, next) => {
       res.status(200).json({
         success: true,
@@ -24,6 +16,14 @@ class RegistrationController {
   };
 
   update = () => {
+    return (req, res, next) => {
+      res.status(200).json({
+        success: true,
+      });
+    };
+  };
+
+  loggedInUser = () => {
     return (req, res, next) => {
       res.status(200).json({
         success: true,
@@ -40,4 +40,4 @@ class RegistrationController {
   };
 }
 
-module.exports = new RegistrationController();
+module.exports = new RegCenterController();

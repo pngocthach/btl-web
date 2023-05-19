@@ -1,4 +1,4 @@
-// const Car = require("../model/car-model");
+const Car = require("../model/car-model");
 
 class CarController {
   getAll = () => {
@@ -10,10 +10,19 @@ class CarController {
   };
 
   create = () => {
-    return (req, res, next) => {
-      res.status(200).json({
-        success: true,
-      });
+    return async (req, res, next) => {
+      try {
+        const car = await Car.create({
+          bienSo: req.body.bienSo,
+        });
+        console.log(car.toJSON());
+        res.status(201).json({
+          success: true,
+          car: car,
+        });
+      } catch (err) {
+        res.status(422).json(err.errors);
+      }
     };
   };
 
