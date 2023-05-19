@@ -1,0 +1,18 @@
+.MainContent {
+    background-color: #F2F4FB;
+    display: inline-block;
+    flex: 4;
+}
+
+.Header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 30px;
+}
+
+.Header div {
+    align-items: center;
+    display: flex;
+    margin-right: 30px;
+}
