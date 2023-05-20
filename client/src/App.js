@@ -1,16 +1,10 @@
-import "./App.css";
-import Signup from "./pages/signup/signup";
-import Login from "./pages/login/login";
-import BarChart from "./components/barChart";
-import LineChart from "./components/lineChart";
-import PieChart from "./components/pieChart";
+import styles from './App.module.css';
+import MainPage from './pages/mainpage/Main'
 
 function App() {
   return (
-    <div className="App">
-      <BarChart></BarChart>
-      <LineChart></LineChart>
-      <PieChart></PieChart>
+    <div className={styles.App}>
+      <MainPage></MainPage>
     </div>
   );
 }

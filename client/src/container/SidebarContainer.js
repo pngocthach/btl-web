@@ -7,13 +7,13 @@ function SidebarContainer() {
   return (
     <div className={styles.Sidebar}>
       <div className={styles.Feature}>
-        <SideBarItem name="Home">
+        <SideBarItem name="Home" src='/Home'>
           <FontAwesomeIcon icon={icon({ name: "house" })} />
         </SideBarItem>
-        <SideBarItem name="Chart">
+        <SideBarItem name="Chart" src='/Chart'>
           <FontAwesomeIcon icon={icon({ name: "chart-simple" })} />
         </SideBarItem>
-        <SideBarItem name="Registration">
+        <SideBarItem name="Registration" src='/Registration'>
           <FontAwesomeIcon icon={icon({ name: "registered" })} />
         </SideBarItem>
       </div>

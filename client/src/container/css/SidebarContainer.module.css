@@ -1,14 +1,16 @@
 .Sidebar {
     background-color: white;
-    flex: 1;
-    flex-direction: column;
+    top: 0;
+    width: 20%;
+    position: fixed;
+    left: 0;
+    height: 100%;
 }
 
-.logout {
+#logout {
     display: inline-block;
-    justify-self: end;
     position: absolute;
-    bottom: 50px;
+    bottom: 6%;
 }
 
 .Feature {
