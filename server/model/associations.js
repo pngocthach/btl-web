@@ -31,7 +31,7 @@ const setAssociations = () => {
   RegCenter.belongsToMany(Owner, { through: Register_At });
 
   sequelize
-    .sync({ force: true })
+    .sync()
     .then((result) => {})
     .catch((err) => console.log(err));
 };

@@ -2,14 +2,14 @@ const express = require("express");
 const router = express.Router();
 const RegCenterController = require("../controller/regCenter-controller");
 
-// router.post("/signup", RegCenterController.signup());
+router.get("/", RegCenterController.getAll());
 
-// router.post("/login", RegCenterController.login());
+router.post("/", RegCenterController.create());
 
-// router.patch("/update/:id", RegCenterController.update());
+router.get("/:id", RegCenterController.findById());
 
-// router.get("/loggedInUser", RegCenterController.loggedInUser());
+router.patch("/:id", RegCenterController.update());
 
-// router.delete("/:id", RegCenterController.delete());
+router.delete("/:id", RegCenterController.delete());
 
 module.exports = router;
