@@ -1,5 +1,3 @@
-// const Car = require("../model/car-model");
-
 class RegistrationController {
   getAll = () => {
     return (req, res, next) => {
