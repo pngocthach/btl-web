@@ -19,9 +19,9 @@ const Car = sequelize.define("Car", {
   //   type: DataTypes.TEXT,
   // },
 
-  // ngayCapXe: {
-  //   type: DataTypes.DATE,
-  // },
+  ngayCapXe: {
+    type: DataTypes.DATE,
+  },
 });
 
 module.exports = Car;

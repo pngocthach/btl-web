@@ -1,19 +1,18 @@
 const { Sequelize, DataTypes } = require("sequelize");
-// const Car = require("./car-model");
 
-const mysql = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
-  {
-    host: process.env.DB_HOST,
-    dialect: "mysql",
-    pool: { min: 0, max: 5 },
-  }
-);
+const sequelize = require("../connect-db");
 
-const Address = mysql.define("Address", {
-  city: {
+const Address = sequelize.define("Address", {
+  thanhPho: {
+    type: DataTypes.CHAR,
+  },
+  quan: {
+    type: DataTypes.CHAR,
+  },
+  phuong: {
+    type: DataTypes.CHAR,
+  },
+  chiTiet: {
     type: DataTypes.CHAR,
   },
 });
