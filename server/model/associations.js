@@ -1,6 +1,6 @@
 const { Sequelize } = require("sequelize");
 const sequelize = require("../connect-db");
-const User = require("./user-model");
+const Account = require("./account-model");
 const Car = require("./car-model");
 const Address = require("./address-model");
 const RegCenter = require("./regCenter-model");
@@ -30,7 +30,13 @@ const setAssociations = () => {
   Owner.belongsToMany(RegCenter, { through: Register_At });
   RegCenter.belongsToMany(Owner, { through: Register_At });
 
+  RegCenter.hasOne(Account, {
+    foreignKey: { unique: true },
+  });
+  Account.belongsTo(RegCenter);
+
   sequelize
+    // .sync({ force: true })
     .sync()
     .then((result) => {})
     .catch((err) => console.log(err));

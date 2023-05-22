@@ -2,9 +2,12 @@ const Car = require("../model/car-model");
 
 class CarController {
   getAll = () => {
-    return (req, res, next) => {
+    return async (req, res, next) => {
+      const { count, rows } = await Car.findAndCountAll();
       res.status(200).json({
         success: true,
+        data: rows,
+        total: count,
       });
     };
   };
@@ -14,6 +17,7 @@ class CarController {
       try {
         const car = await Car.create({
           bienSo: req.body.bienSo,
+          ngayCapXe: req.body.ngayCapXe,
         });
         console.log(car.toJSON());
         res.status(201).json({
@@ -27,10 +31,17 @@ class CarController {
   };
 
   findById = () => {
-    return (req, res, next) => {
-      res.status(200).json({
-        success: true,
+    return async (req, res, next) => {
+      const id = req.params.id;
+      const car = await Car.findOne({
+        where: { bienSo: id },
       });
+      const resp = { success: false, car: null };
+      if (car) {
+        resp.success = true;
+        resp.car = car;
+      }
+      res.status(200).json(resp);
     };
   };
 
@@ -43,10 +54,18 @@ class CarController {
   };
 
   delete = () => {
-    return (req, res, next) => {
-      res.status(200).json({
-        success: true,
+    return async (req, res, next) => {
+      const id = req.params.id;
+      const car = await Car.findOne({
+        where: { bienSo: id },
       });
+      const resp = { success: false, msg: "Car not found" };
+      if (car) {
+        await Car.destroy({ where: { bienSo: id } });
+        resp.success = true;
+        resp.msg = "Car deleted";
+      }
+      res.status(200).json(resp);
     };
   };
 }

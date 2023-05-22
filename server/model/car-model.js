@@ -5,6 +5,8 @@ const sequelize = require("../connect-db");
 const Car = sequelize.define("Car", {
   bienSo: {
     type: DataTypes.CHAR,
+    primaryKey: true,
+    unique: true,
   },
 
   // soMay: {

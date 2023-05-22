@@ -1,6 +1,6 @@
 const RegCenter = require("../model/regCenter-model");
 
-class OwnerController {
+class RegCenterController {
   getAll = () => {
     return async (req, res, next) => {
       const { count, rows } = await RegCenter.findAndCountAll();
@@ -79,4 +79,4 @@ class OwnerController {
   };
 }
 
-module.exports = new OwnerController();
+module.exports = new RegCenterController();
