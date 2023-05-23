@@ -18,6 +18,7 @@ class CarController {
         const car = await Car.create({
           bienSo: req.body.bienSo,
           ngayCapXe: req.body.ngayCapXe,
+          ownerId: req.body.ownerId,
         });
         console.log(car.toJSON());
         res.status(201).json({
@@ -25,7 +26,10 @@ class CarController {
           car: car,
         });
       } catch (err) {
-        res.status(422).json(err.errors);
+        res.status(422).json({
+          msg: "Not create car",
+          err: err,
+        });
       }
     };
   };

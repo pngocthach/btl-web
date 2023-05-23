@@ -5,6 +5,10 @@ const jwt = require("jsonwebtoken");
 class AccountController {
   signup = () => {
     return async (req, res, next) => {
+      if (!req.userData.isAdmin) {
+        console.log(req.userData);
+        return res.status(401).json({ msg: "You do not have permission" });
+      }
       if (req.body.password !== req.body.confirm_password) {
         return res.status(422).json([
           { path: "password", message: "Passwords do not match" },
@@ -45,7 +49,7 @@ class AccountController {
         if (passed) {
           const signVals = user.toJSON();
           delete signVals.password;
-          const token = await jwt.sign(signVals, process.env.JWT_KEY, {
+          const token = jwt.sign(signVals, process.env.JWT_KEY, {
             expiresIn: "30d",
           });
           resp.success = true;
@@ -80,18 +84,22 @@ class AccountController {
   loggedInUser = () => {
     return async (req, res, next) => {
       const resp = { success: false, user: null, msg: "User not found" };
-      const token = req.headers.authorization
-        ? req.headers.authorization.split(" ")[1]
-        : "";
-      // console.log(req.headers);
-      const decoded = await jwt.verify(token, process.env.JWT_KEY);
-      const user = await Account.findByPk(decoded.id);
-      const data = user.toJSON();
-      delete data.password;
-      resp.success = true;
-      resp.user = data;
-      resp.msg = "User is logged in";
-      res.status(200).json(resp);
+      try {
+        const token = req.headers.authorization
+          ? req.headers.authorization.split(" ")[1]
+          : "";
+        // console.log(req.headers);
+        const decoded = jwt.verify(token, process.env.JWT_KEY);
+        const user = await Account.findByPk(decoded.id);
+        const data = user.toJSON();
+        delete data.password;
+        resp.success = true;
+        resp.user = data;
+        resp.msg = "User is logged in";
+        res.status(200).json(resp);
+      } catch (err) {
+        res.status(422).json(resp);
+      }
     };
   };
 

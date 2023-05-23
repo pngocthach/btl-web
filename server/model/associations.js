@@ -15,7 +15,9 @@ const setAssociations = () => {
   Car.hasMany(Registration);
   Registration.belongsTo(Car);
 
-  Owner.hasMany(Car);
+  Owner.hasMany(Car, {
+    foreignKey: { allowNull: false },
+  });
   Car.belongsTo(Owner);
 
   Owner.hasMany(Registration);

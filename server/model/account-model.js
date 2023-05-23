@@ -12,6 +12,21 @@ const Account = sequelize.define("Account", {
   password: {
     type: DataTypes.CHAR,
   },
+
+  isAdmin: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+});
+
+Account.findOrCreate({
+  where: {
+    userName: "admin",
+  },
+  defaults: {
+    password: "admin",
+    isAdmin: "true",
+  },
 });
 
 Account.beforeCreate(async (user, options) => {

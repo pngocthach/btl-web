@@ -9,6 +9,7 @@ const registrationRoutes = require("./routes/registration");
 const accountRoutes = require("./routes/account");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
+const Account = require("./model/account-model");
 
 const setAssociations = require("./model/associations")();
 

@@ -46,7 +46,7 @@ class RegCenterController {
   update = () => {
     return async (req, res, next) => {
       const centerId = req.params.id;
-      const resp = { success: false, msg: "Todo not found" };
+      const resp = { success: false, msg: "RegCenter not found" };
       const regCenter = await RegCenter.findOne({
         where: { id: centerId },
       });
@@ -55,7 +55,7 @@ class RegCenterController {
         await RegCenter.update(vals, { where: { id: centerId } });
         await regCenter.reload();
         resp.success = true;
-        resp.msg = "Todo updated";
+        resp.msg = "RegCenter updated";
         resp.regCenter = regCenter;
       }
       res.status(200).json(resp);
@@ -65,14 +65,14 @@ class RegCenterController {
   delete = () => {
     return async (req, res, next) => {
       const centerId = req.params.id;
-      const resp = { success: false, msg: "Todo not found" };
+      const resp = { success: false, msg: "RegCenter not found" };
       const regCenter = await RegCenter.findOne({
         where: { id: centerId },
       });
       if (regCenter) {
         await RegCenter.destroy({ where: { id: centerId } });
         resp.success = true;
-        resp.msg = "Todo deleted";
+        resp.msg = "RegCenter deleted";
       }
       res.status(200).json(resp);
     };
