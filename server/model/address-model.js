@@ -2,19 +2,19 @@ const { Sequelize, DataTypes } = require("sequelize");
 
 const sequelize = require("../connect-db");
 
-const Owner = sequelize.define("Owner", {
-  fname: {
+const Address = sequelize.define("Address", {
+  thanhPho: {
     type: DataTypes.CHAR,
   },
-  lname: {
+  quan: {
     type: DataTypes.CHAR,
   },
-  phoneNum: {
+  phuong: {
     type: DataTypes.CHAR,
   },
-  dob: {
-    type: DataTypes.DATE,
+  chiTiet: {
+    type: DataTypes.CHAR,
   },
 });
 
-module.exports = Owner;
+module.exports = Address;

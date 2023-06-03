@@ -1,5 +1,3 @@
-// const Car = require("../model/car-model");
-
 class AddressController {
   getAll = () => {
     return (req, res, next) => {
