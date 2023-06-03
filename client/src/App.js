@@ -1,12 +1,11 @@
 import styles from "./App.module.css";
 import MainPage from "./pages/mainpage/Main";
-import EditCustomers from "./pages/editUsers/EditCustomers";
+import RegistrationTable from "./components/RegistrationTable";
 
 function App() {
   return (
     <div className={styles.App}>
-      {/* <MainPage></MainPage> */}
-      <EditCustomers></EditCustomers>
+      <MainPage></MainPage>
     </div>
   );
 }
