@@ -20,7 +20,7 @@ function PieChart() {
       });
 
     return (
-        <div style={{width: 500}}>
+        <div style={{width: 400}}>
             <Pie data={centerData}></Pie>
         </div>
     )
