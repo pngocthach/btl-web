@@ -19,17 +19,6 @@ const Account = sequelize.define("Account", {
   },
 });
 
-Account.findOrCreate({
-  where: {
-    userName: "admin",
-  },
-  defaults: {
-    password: "admin",
-    isAdmin: "true",
-  },
-});
-
-
 Account.beforeCreate(async (user, options) => {
   const hashed = await bcrypt.hash(user.password, 10);
   user.password = hashed;

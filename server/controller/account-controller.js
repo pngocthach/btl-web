@@ -1,12 +1,12 @@
 const Account = require("../model/account-model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { where } = require("sequelize");
 
 class AccountController {
   signup = () => {
     return async (req, res, next) => {
       if (!req.userData.isAdmin) {
-        console.log(req.userData);
         return res.status(401).json({ msg: "You do not have permission" });
       }
       if (req.body.password !== req.body.confirm_password) {
@@ -34,10 +34,10 @@ class AccountController {
 
   login = () => {
     return async (req, res, next) => {
-      const msg = "Something is wrong with your email or password.";
+      const msg = "Something is wrong with your username or password.";
       const errors = [
         { path: "password", message: msg },
-        { path: "email", msg: msg },
+        { path: "username", msg: msg },
       ];
       const resp = { success: false, errors: errors };
       const user = await Account.findOne({
@@ -63,6 +63,9 @@ class AccountController {
 
   update = () => {
     return async (req, res, next) => {
+      if (!(req.userData.isAdmin || req.userData.id == req.params.id)) {
+        return res.status(401).json({ msg: "You do not have permission" });
+      }
       const resp = { success: false, user: null };
       const userId = req.params.id;
       const user = await Account.findByPk(userId);
@@ -104,9 +107,37 @@ class AccountController {
   };
 
   delete = () => {
-    return (req, res, next) => {
+    return async (req, res, next) => {
+      if (!req.userData.isAdmin) {
+        return res.status(401).json({ msg: "You do not have permission" });
+      }
+      const userId = req.params.id;
+      const user = await Account.findByPk(userId);
+      const resp = { success: false, msg: "User not found" };
+      if (user) {
+        await user.destroy();
+        resp.msg = "Account deleted";
+        resp.success = true;
+      }
+      if (resp.success) {
+        res.status(200).json(resp);
+      } else {
+        res.status(401).json(resp);
+      }
+    };
+  };
+
+  getAll = () => {
+    return async (req, res, next) => {
+      if (!req.userData.isAdmin) {
+        console.log(req.userData);
+        return res.status(401).json({ msg: "You do not have permission" });
+      }
+      const { count, rows } = await Account.findAndCountAll();
       res.status(200).json({
         success: true,
+        data: rows,
+        total: count,
       });
     };
   };
