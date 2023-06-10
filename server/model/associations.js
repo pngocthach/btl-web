@@ -42,6 +42,7 @@ const setAssociations = () => {
     .sync()
     .then((result) => {})
     .catch((err) => console.log(err));
+
 };
 
 module.exports = setAssociations;

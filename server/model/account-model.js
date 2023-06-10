@@ -29,6 +29,7 @@ Account.findOrCreate({
   },
 });
 
+
 Account.beforeCreate(async (user, options) => {
   const hashed = await bcrypt.hash(user.password, 10);
   user.password = hashed;
