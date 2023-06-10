@@ -23,7 +23,7 @@ const setAssociations = () => {
   Owner.hasMany(Registration);
   Registration.belongsTo(Owner);
 
-  Owner.hasMany(Address);
+  Owner.hasOne(Address);
   Address.belongsTo(Owner);
 
   RegCenter.hasMany(Registration);
@@ -40,7 +40,17 @@ const setAssociations = () => {
   sequelize
     // .sync({ force: true })
     .sync()
-    .then((result) => {})
+    .then(() => {
+      Account.findOrCreate({
+        where: {
+          userName: "admin",
+        },
+        defaults: {
+          password: "admin",
+          isAdmin: "true",
+        },
+      });
+    })
     .catch((err) => console.log(err));
 };
 
