@@ -1,4 +1,7 @@
 const Account = require("../model/account-model");
+const RegCenter = require("../model/regCenter-model");
+const Address = require("../model/address-model");
+
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { where } = require("sequelize");
@@ -9,22 +12,37 @@ class AccountController {
       if (!req.userData.isAdmin) {
         return res.status(401).json({ msg: "You do not have permission" });
       }
-      if (req.body.password !== req.body.confirm_password) {
-        return res.status(422).json([
-          { path: "password", message: "Passwords do not match" },
-          { path: "confirm_password", message: "Passwords do not match" },
-        ]);
-      }
+      // if (req.body.password !== req.body.confirm_password) {
+      //   return res.status(422).json([
+      //     { path: "password", message: "Passwords do not match" },
+      //     { path: "confirm_password", message: "Passwords do not match" },
+      //   ]);
+      // }
 
       try {
+        const regCenter = await RegCenter.create({
+          name: req.body.center.name,
+        });
+
+        const address = await Address.create({
+          thanhPho: req.body.address.thanhPho,
+          quan: req.body.address.quan,
+          phuong: req.body.address.phuong,
+          chiTiet: req.body.address.chiTiet,
+          RegCenterId: regCenter.id,
+        });
+
         const user = await Account.create({
           userName: req.body.userName,
           password: req.body.password,
-          RegCenterId: req.body.regCenterId,
+          RegCenterId: regCenter.id,
         });
+
         res.status(200).json({
           success: true,
           user: user,
+          regCenter,
+          address,
         });
       } catch (err) {
         res.status(422).json(err.errors);
