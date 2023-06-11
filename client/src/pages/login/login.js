@@ -4,28 +4,31 @@ import * as React from "react";
 import TextField from "@mui/material/TextField";
 import { Stack } from "@mui/material";
 import { Button } from "@mui/material";
+import { Box } from "@mui/material";
 
 function Login() {
-  let body = {
-    username: "admin",
-    password: "admin",
-  };
+  const [userName, setUserName] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+  function body() {
+    return {
+      userName: userName,
+      password: password,
+    };
+  }
 
   function loginCLick() {
     fetch("http://localhost:5000/account/login", {
       method: "POST",
       headers: {
-        accept: "application.json",
         "Content-Type": "application/json",
       },
-      body: {
-        "userName": "admin",
-        "password": "admin",
-      },
+      body: JSON.stringify(body()),
       cache: "default",
     })
       .then((response) => response.json())
-      .then((json) => console.log(json));
+      .then((json) => console.log(json))
+      .catch((err) => console.log(err));
   }
 
   return (
@@ -36,20 +39,31 @@ function Login() {
 
           <Stack spacing={2}>
             <TextField
-              id="filled-basic"
+              id="username-input"
               label="Tên người dùng"
               variant="filled"
+              onChange={(e) => setUserName(e.target.value)}
             />
             <TextField
-              id="filled-password-input"
+              id="password-input"
               label="Mật khẩu"
               type="password"
               autoComplete="current-password"
               variant="filled"
+              onChange={(e) => setPassword(e.target.value)}
             />
-            <Button variant="contained" onClick={loginCLick}>
-              Đăng Nhập
-            </Button>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                p: 1,
+                m: 1,
+              }}
+            >
+              <Button variant="contained" onClick={loginCLick}>
+                Đăng nhập
+              </Button>
+            </Box>
           </Stack>
         </form>
       </div>
