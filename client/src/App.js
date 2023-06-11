@@ -7,8 +7,9 @@ import Signup from "./pages/signup/signup";
 function App() {
   return (
     <div className={styles.App}>
-      {/* <MainPage></MainPage> */}
-      <Signup></Signup>
+      <MainPage></MainPage>
+      {/* <Signup></Signup>
+      <Login></Login> */}
     </div>
   );
 }

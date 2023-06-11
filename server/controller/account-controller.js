@@ -52,6 +52,8 @@ class AccountController {
 
   login = () => {
     return async (req, res, next) => {
+      res.header("Access-Control-Allow-Credentials", true);
+
       const msg = "Something is wrong with your username or password.";
       const errors = [
         { path: "password", message: msg },
@@ -73,6 +75,10 @@ class AccountController {
           resp.success = true;
           resp.errors = [];
           resp.token = token;
+          res.cookie("token", token, {
+            maxAge: 1000 * 60 * 5,
+            httpOnly: true,
+          });
         }
       }
       res.status(200).json(resp);

@@ -11,11 +11,18 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const Account = require("./model/account-model");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const setAssociations = require("./model/associations")();
 
+app.use(cookieParser());
 app.use(morgan("dev"));
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000", //Chan tat ca cac domain khac ngoai domain nay
+    credentials: true, //Để bật cookie HTTP qua CORS
+  })
+);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -26,6 +33,18 @@ app.use("/address", addressRoutes);
 app.use("/regCenter", regCenterRoutes);
 app.use("/registration", registrationRoutes);
 app.use("/account", accountRoutes);
+
+app.get("/cookie", (req, res) => {
+  res.cookie("test", "value", {
+    maxAge: 1000 * 60 * 5,
+    httpOnly: true,
+  });
+  res.send("set cookie");
+});
+
+app.get("/cookie/get", (req, res) => {
+  res.send(req.cookies);
+});
 
 //Error Handling
 app.use((req, res, next) => {

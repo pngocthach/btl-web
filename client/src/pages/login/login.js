@@ -20,6 +20,7 @@ function Login() {
   function loginCLick() {
     fetch("http://localhost:5000/account/login", {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
