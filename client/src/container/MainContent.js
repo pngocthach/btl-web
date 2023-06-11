@@ -8,6 +8,7 @@ import {Routes, Route} from 'react-router-dom';
 import Chart from "../pages/chart/Chart";
 import Home from "../pages/home/Home";
 import Registration from "../pages/registration/Registration";
+import Signup from "../pages/signup/signup";
 export default function MainContent() {
   const username = "kien";
   const url =
@@ -31,6 +32,7 @@ export default function MainContent() {
           <Route path="/home" element={<Home/>}/>
           <Route path="/chart"element={<Chart/>}/>
           <Route path="/registration" element={<Registration/>}/>
+          <Route path="/RegistAccount" element={<Signup/>}/>
         </Routes>
       </div>
     </div>
