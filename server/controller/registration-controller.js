@@ -31,12 +31,13 @@ class RegistrationController {
           }
         }
         const page = req.query.page ? parseInt(req.query.page) : 1;
-        const per_page = req.query.per_page ? parseInt(req.query.per_page) : 3;
+        const size = req.query.size ? parseInt(req.query.size) : 3;
 
         const { count, rows } = await Reg.findAndCountAll({
           where,
-          offset: (page - 1) * page,
-          limit: per_page,
+          offset: (page - 1) * size,
+          limit: size,
+          distinct: true,
           include: [Car, Owner],
         });
 
