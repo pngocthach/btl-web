@@ -15,6 +15,7 @@ router.get(
       next();
     }
   },
+  auth,
   RegistrationController.getAll()
 );
 

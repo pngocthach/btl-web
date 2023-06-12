@@ -151,6 +151,12 @@ class AccountController {
     };
   };
 
+  logout = () => {
+    return async (req, res, next) => {
+      res.clearCookie("token");
+    };
+  };
+
   getAll = () => {
     return async (req, res, next) => {
       if (!req.userData.isAdmin) {

@@ -15,4 +15,6 @@ router.get("/getAll", checkAuth, Account.getAll());
 
 router.delete("/delete/:id", checkAuth, Account.delete());
 
+router.get("/logout", Account.logout());
+
 module.exports = router;
