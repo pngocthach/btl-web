@@ -12,15 +12,9 @@ class AccountController {
       if (!req.userData.isAdmin) {
         return res.status(401).json({ msg: "You do not have permission" });
       }
-      // if (req.body.password !== req.body.confirm_password) {
-      //   return res.status(422).json([
-      //     { path: "password", message: "Passwords do not match" },
-      //     { path: "confirm_password", message: "Passwords do not match" },
-      //   ]);
-      // }
 
       try {
-        const regCenter = await RegCenter.create({
+        const regCenter = await RegCenter.findOrCreate({
           name: req.body.center.name,
         });
 
@@ -52,8 +46,6 @@ class AccountController {
 
   login = () => {
     return async (req, res, next) => {
-      res.header("Access-Control-Allow-Credentials", true);
-
       const msg = "Something is wrong with your username or password.";
       const errors = [
         { path: "password", message: msg },
@@ -112,12 +104,7 @@ class AccountController {
     return async (req, res, next) => {
       const resp = { success: false, user: null, msg: "User not found" };
       try {
-        const token = req.headers.authorization
-          ? req.headers.authorization.split(" ")[1]
-          : "";
-        // console.log(req.headers);
-        const decoded = jwt.verify(token, process.env.JWT_KEY);
-        const user = await Account.findByPk(decoded.id);
+        const user = await Account.findByPk(req.userData.id);
         const data = user.toJSON();
         delete data.password;
         resp.success = true;
@@ -152,8 +139,9 @@ class AccountController {
   };
 
   logout = () => {
-    return async (req, res, next) => {
+    return (req, res, next) => {
       res.clearCookie("token");
+      res.status(200).json({ success: "success" });
     };
   };
 

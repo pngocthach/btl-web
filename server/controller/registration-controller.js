@@ -37,7 +37,9 @@ class RegistrationController {
           where,
           offset: (page - 1) * page,
           limit: per_page,
+          include: [Car, Owner],
         });
+
         res.status(200).json({
           success: true,
           data: rows,
@@ -100,10 +102,9 @@ class RegistrationController {
   };
 
   findById = () => {
-    return (req, res, next) => {
-      res.status(200).json({
-        success: true,
-      });
+    return async (req, res, next) => {
+      if (req.userData.isAdmin || req.userData.RegCenterId) {
+      }
     };
   };
 
@@ -115,13 +116,13 @@ class RegistrationController {
     };
   };
 
-  delete = () => {
-    return (req, res, next) => {
-      res.status(200).json({
-        success: true,
-      });
-    };
-  };
+  // delete = () => {
+  //   return (req, res, next) => {
+  //     res.status(200).json({
+  //       success: true,
+  //     });
+  //   };
+  // };
 }
 
 module.exports = new RegistrationController();

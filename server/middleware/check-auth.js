@@ -6,7 +6,6 @@ module.exports = async (req, res, next) => {
     //   ? req.headers.authorization.split(" ")[1]
     //   : "";
     const token = req.cookies.token;
-    console.log(req.cookies);
     const decoded = jwt.verify(token, process.env.JWT_KEY);
     // console.log(decoded);
     req.userData = decoded;

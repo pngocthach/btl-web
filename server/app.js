@@ -17,12 +17,19 @@ const setAssociations = require("./model/associations")();
 
 app.use(cookieParser());
 app.use(morgan("dev"));
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Credentials", true);
+  next();
+});
+
 app.use(
   cors({
     origin: "http://localhost:3000", //Chan tat ca cac domain khac ngoai domain nay
     credentials: true, //Để bật cookie HTTP qua CORS
   })
 );
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
