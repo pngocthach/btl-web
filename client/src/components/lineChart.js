@@ -27,9 +27,11 @@ function LineChart() {
           },
         ],
     });
+
+
     
     return (
-        <div style={{width: 600}}>
+        <div style={{width: 500, marginTop: 50}}>
             <Line data={carData}></Line>
         </div>
     )

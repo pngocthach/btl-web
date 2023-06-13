@@ -1,15 +1,28 @@
 const express = require("express");
 const router = express.Router();
 const RegistrationController = require("../controller/registration-controller");
+const auth = require("../middleware/check-auth");
+const { query, validationResult } = require("express-validator");
+const { regQueryValid, validate } = require("../middleware/validation");
 
-router.post("/signup", RegistrationController.signup());
+router.get(
+  "/",
+  regQueryValid(),
+  validate,
+  auth,
+  RegistrationController.getAll()
+);
 
-router.post("/login", RegistrationController.login());
+router.get(
+  "/regRecord",
+  regQueryValid(),
+  validate,
+  auth,
+  RegistrationController.getRecord()
+);
 
-router.patch("/update/:id", RegistrationController.update());
+router.post("/", auth, RegistrationController.create());
 
-router.get("/loggedInUser", RegistrationController.loggedInUser());
-
-router.delete("/:id", RegistrationController.delete());
+router.get("/:id", auth, RegistrationController.findById());
 
 module.exports = router;

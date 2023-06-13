@@ -21,7 +21,7 @@ function BarChart() {
       });
 
     return (
-        <div style={{width: 600}}>
+        <div style={{width: 500, marginTop: 50}}>
             <Bar data={carData}></Bar>
         </div>
     )

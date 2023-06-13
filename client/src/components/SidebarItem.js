@@ -1,9 +1,10 @@
 import styles from './css/SidebarItem.module.css';
+import {Link} from 'react-router-dom';
 function SidebarItem(props) {
     return (
-        <div className={styles.SidebarItem + " " + props.id} >
-            <span>{props.children}</span>
-            <button >{props.name}</button>
+        <div className={styles.SidebarItem} id={props.id}>
+            <Link to={props.src} className={styles.Link}><span>{props.children}</span>
+<p>{props.name}</p></Link>
         </div>
     );
 }

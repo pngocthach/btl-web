@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const OwnersController = require("../controller/ownersController");
+const OwnersController = require("../controller/owners-controller");
+const auth = require("../middleware/check-auth");
 
-router.get("/", OwnersController.getAll());
+router.get("/", auth, OwnersController.getAll());
 
 router.post("/", OwnersController.create());
 
