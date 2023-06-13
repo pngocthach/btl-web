@@ -29,7 +29,7 @@ function LineChart() {
     });
     
     return (
-        <div style={{width: 600}}>
+        <div style={{width: 400}}>
             <Line data={carData}></Line>
         </div>
     )

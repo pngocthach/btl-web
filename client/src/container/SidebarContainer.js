@@ -16,6 +16,9 @@ function SidebarContainer() {
         <SideBarItem name="Registration" src='/Registration'>
           <FontAwesomeIcon icon={icon({ name: "registered" })} />
         </SideBarItem>
+        <SideBarItem name="Create Account" src='/RegistAccount'>
+        <FontAwesomeIcon icon={icon({ name: "file-invoice" })} />
+        </SideBarItem>
       </div>
       <SideBarItem id={styles.logout} name="Logout">
         <FontAwesomeIcon
