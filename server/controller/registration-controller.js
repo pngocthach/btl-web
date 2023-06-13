@@ -66,7 +66,7 @@ class RegistrationController {
         res.status(200).json({
           success: true,
           data: rows,
-          total: count,
+          total: rows.length,
         });
       }
     };
