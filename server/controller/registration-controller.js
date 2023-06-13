@@ -153,14 +153,6 @@ class RegistrationController {
       });
     };
   };
-
-  // delete = () => {
-  //   return (req, res, next) => {
-  //     res.status(200).json({
-  //       success: true,
-  //     });
-  //   };
-  // };
 }
 
 module.exports = new RegistrationController();

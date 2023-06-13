@@ -13,14 +13,16 @@ router.get(
   RegistrationController.getAll()
 );
 
-router.get("/regRecord", auth, RegistrationController.getRecord());
+router.get(
+  "/regRecord",
+  regQueryValid(),
+  validate,
+  auth,
+  RegistrationController.getRecord()
+);
 
 router.post("/", auth, RegistrationController.create());
 
 router.get("/:id", auth, RegistrationController.findById());
-
-// router.patch("/:id", RegistrationController.update());
-
-// router.delete("/:id", RegistrationController.delete());
 
 module.exports = router;
