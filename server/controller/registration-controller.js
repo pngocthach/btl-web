@@ -4,32 +4,23 @@ const Address = require("../model/address-model");
 const Car = require("../model/car-model");
 const { Op, Sequelize } = require("sequelize");
 const { addDays, subDays } = require("date-fns");
+const RegCenter = require("../model/regCenter-model");
 
 class RegistrationController {
   getAll = () => {
     return async (req, res, next) => {
       if (req.userData.isAdmin || req.userData.RegCenterId) {
         const where = {};
-        const ngayHetHan = req.query.date;
+        const { sDate, eDate } = req.query;
         if (req.userData.RegCenterId)
           where.RegCenterId = req.userData.RegCenterId;
-        if (ngayHetHan) {
-          if (parseInt(ngayHetHan) >= 0) {
-            where.ngayHetHan = {
-              [Sequelize.Op.between]: [
-                Date.now() - 1,
-                addDays(Date.now(), parseInt(ngayHetHan)),
-              ],
-            };
-          } else {
-            where.ngayHetHan = {
-              [Sequelize.Op.between]: [
-                subDays(Date.now(), -parseInt(ngayHetHan)),
-                Date.now(),
-              ],
-            };
-          }
+
+        if (sDate && eDate) {
+          where.ngayHetHan = {
+            [Sequelize.Op.between]: [Date.parse(sDate), Date.parse(eDate)],
+          };
         }
+
         const page = req.query.page ? parseInt(req.query.page) : 1;
         const size = req.query.size ? parseInt(req.query.size) : 3;
 
@@ -38,7 +29,7 @@ class RegistrationController {
           offset: (page - 1) * size,
           limit: size,
           distinct: true,
-          include: [Car, Owner],
+          include: [Car, Owner, RegCenter],
         });
 
         res.status(200).json({
@@ -50,54 +41,90 @@ class RegistrationController {
     };
   };
 
+  getRecord = () => {
+    return async (req, res, next) => {
+      if (req.userData.isAdmin || req.userData.RegCenterId) {
+        const where = {};
+        const { sDate, eDate } = req.query;
+        if (req.userData.RegCenterId)
+          where.RegCenterId = req.userData.RegCenterId;
+
+        const page = req.query.page ? parseInt(req.query.page) : 1;
+        const size = req.query.size ? parseInt(req.query.size) : 3;
+        if (sDate && eDate) {
+          where.ngayHetHan = {
+            [Sequelize.Op.between]: [Date.parse(sDate), Date.parse(eDate)],
+          };
+        }
+        const { count, rows } = await Reg.findAndCountAll({
+          where,
+          offset: (page - 1) * size,
+          limit: size,
+          distinct: true,
+        });
+
+        res.status(200).json({
+          success: true,
+          data: rows,
+          total: rows.length,
+        });
+      }
+    };
+  };
+
   create = () => {
     return async (req, res, next) => {
-      try {
-        const [owner, ownerCreated] = await Owner.findOrCreate({
-          where: { id: req.body.owner.id },
-          defaults: {
-            id: req.body.owner.id,
-            name: req.body.owner.name,
-            phoneNum: req.body.owner.phoneNum,
-            dob: req.body.owner.dob,
-          },
-        });
-        await Address.findOrCreate({
-          where: { OwnerId: req.body.owner.id },
-          defaults: {
-            thanhPho: req.body.address.thanhPho,
-            quan: req.body.address.quan,
-            phuong: req.body.address.phuong,
-            chiTiet: req.body.address.chiTiet,
-          },
-        });
-
-        let car = await Car.findOne({
-          where: { bienSo: req.body.car.bienSo },
-        });
-        if (!car) {
-          car = await Car.create({
-            OwnerId: req.body.owner.id,
-            bienSo: req.body.car.bienSo,
-            ngayCapXe: req.body.car.ngayCapXe,
+      if (req.userData.isAdmin || req.userData.RegCenterId) {
+        try {
+          const [owner, ownerCreated] = await Owner.findOrCreate({
+            where: { id: req.body.owner.id },
+            defaults: {
+              id: req.body.owner.id,
+              name: req.body.owner.name,
+              phoneNum: req.body.owner.phoneNum,
+              dob: req.body.owner.dob,
+            },
           });
-        }
+          await Address.findOrCreate({
+            where: { OwnerId: req.body.owner.id },
+            defaults: {
+              thanhPho: req.body.address.thanhPho,
+              quan: req.body.address.quan,
+              phuong: req.body.address.phuong,
+              chiTiet: req.body.address.chiTiet,
+            },
+          });
 
-        const reg = await Reg.create({
-          OwnerId: req.body.owner.id,
-          CarBienSo: req.body.car.bienSo,
-          ngayHetHan: req.body.ngayHetHan,
-        });
-        const address = await owner.getAddress();
-        res.status(201).json({
-          success: true,
-          owner: owner,
-          address,
-          car,
-          reg,
-        });
-      } catch (err) {
-        res.status(422).json(err.errors);
+          let car = await Car.findOne({
+            where: { bienSo: req.body.car.bienSo },
+          });
+          if (!car) {
+            car = await Car.create({
+              OwnerId: req.body.owner.id,
+              bienSo: req.body.car.bienSo,
+              ngayCapXe: req.body.car.ngayCapXe,
+            });
+          }
+
+          const reg = await Reg.create({
+            OwnerId: req.body.owner.id,
+            CarBienSo: req.body.car.bienSo,
+            ngayHetHan: req.body.ngayHetHan,
+            RegCenterId: req.userData.RegCenterId
+              ? req.userData.RegCenterId
+              : null,
+          });
+          const address = await owner.getAddress();
+          res.status(201).json({
+            success: true,
+            owner: owner,
+            address,
+            car,
+            reg,
+          });
+        } catch (err) {
+          res.status(422).json(err.errors);
+        }
       }
     };
   };
