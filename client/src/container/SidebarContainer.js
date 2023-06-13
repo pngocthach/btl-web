@@ -7,20 +7,20 @@ function SidebarContainer() {
   return (
     <div className={styles.Sidebar}>
       <div className={styles.Feature}>
-        <SideBarItem name="Home" src='/Home'>
+        <SideBarItem name="Home" src='/mainpage/Home'>
           <FontAwesomeIcon icon={icon({ name: "house" })} />
         </SideBarItem>
-        <SideBarItem name="Chart" src='/Chart'>
+        <SideBarItem name="Chart" src='/mainpage/Chart'>
           <FontAwesomeIcon icon={icon({ name: "chart-simple" })} />
         </SideBarItem>
-        <SideBarItem name="Registration" src='/Registration'>
+        <SideBarItem name="Registration" src='/mainpage/Registration'>
           <FontAwesomeIcon icon={icon({ name: "registered" })} />
         </SideBarItem>
-        <SideBarItem name="Create Account" src='/RegistAccount'>
+        <SideBarItem name="Create Account" src='/mainpage/RegistAccount'>
         <FontAwesomeIcon icon={icon({ name: "file-invoice" })} />
         </SideBarItem>
       </div>
-      <SideBarItem id={styles.logout} name="Logout">
+      <SideBarItem id={styles.logout} name="Logout" src="/login">
         <FontAwesomeIcon
           icon={icon({ name: "right-from-bracket" })}
           className="iconSidebar"

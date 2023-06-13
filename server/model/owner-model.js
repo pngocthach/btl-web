@@ -3,10 +3,11 @@ const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../connect-db");
 
 const Owner = sequelize.define("Owner", {
-  fname: {
+  id: {
     type: DataTypes.CHAR,
+    primaryKey: true,
   },
-  lname: {
+  name: {
     type: DataTypes.CHAR,
   },
   phoneNum: {

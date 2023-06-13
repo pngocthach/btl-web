@@ -18,7 +18,7 @@ function LineChart() {
     
           },
           {
-            label: "Số lượng xe hết hạn",
+            label: "Số lượng xe sẽ hết hạn",
             data: registeredCarData.map((data) => data.expiredCar),
             backgroundColor: ['red'],
             borderColor: "black",

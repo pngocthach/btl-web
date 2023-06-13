@@ -18,7 +18,7 @@ class CarController {
         const car = await Car.create({
           bienSo: req.body.bienSo,
           ngayCapXe: req.body.ngayCapXe,
-          ownerId: req.body.ownerId,
+          OwnerId: req.body.ownerId,
         });
         console.log(car.toJSON());
         res.status(201).json({

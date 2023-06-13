@@ -7,8 +7,14 @@ router.post("/signup", checkAuth, Account.signup());
 
 router.post("/login", Account.login());
 
-router.patch("/update/:id", Account.update());
+router.patch("/update/:id", checkAuth, Account.update());
 
 router.get("/loggedInUser", Account.loggedInUser());
+
+router.get("/getAll", checkAuth, Account.getAll());
+
+router.delete("/delete/:id", checkAuth, Account.delete());
+
+router.get("/logout", Account.logout());
 
 module.exports = router;

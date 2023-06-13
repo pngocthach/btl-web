@@ -28,11 +28,11 @@ export default function MainContent() {
       </div>
       <div className={styles.Body}>
         {/* <Chart/> */}
-        <Routes>
-          <Route path="/home" element={<Home/>}/>
-          <Route path="/chart"element={<Chart/>}/>
-          <Route path="/registration" element={<Registration/>}/>
-          <Route path="/RegistAccount" element={<Signup/>}/>
+        <Routes >
+          <Route path="/mainpage/home" element={<Home/>}/>
+          <Route path="/mainpage/chart"element={<Chart/>}/>
+          <Route path="/mainpage/registration" element={<Registration/>}/>
+          <Route path="/mainpage/RegistAccount" element={<Signup/>}/>
         </Routes>
       </div>
     </div>
