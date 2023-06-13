@@ -68,7 +68,7 @@ class AccountController {
           resp.errors = [];
           resp.token = token;
           res.cookie("token", token, {
-            maxAge: 1000 * 60 * 24,
+            maxAge: 1000 * 60 * 60 * 24,
             httpOnly: true,
           });
         }

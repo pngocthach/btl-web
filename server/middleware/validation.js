@@ -5,6 +5,7 @@ const regQueryValid = () => {
     query("page").isInt({ max: 100000, min: 0 }).optional(),
     query("size").isInt({ max: 100000, min: 0 }).optional(),
     query("sDate").isDate().optional(),
+    query("eDate").isDate().optional(),
   ];
 };
 
