@@ -18,6 +18,9 @@
         position: absolute;
         top: 100px;
     }
+    .lout {
+        display: inline-block;
+    }
 }
 
 @media screen and (max-width: 768px ) {
@@ -38,6 +41,9 @@
     #logout {
         display: inline-block;
         flex: 1;
+    }
+    .lout {
+        display: inline-block;
     }
 }
 

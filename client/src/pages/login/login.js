@@ -10,6 +10,7 @@ function Login() {
   const [userName, setUserName] = React.useState("");
   const [password, setPassword] = React.useState("");
   const navigate = useNavigate();
+  const [mess, setMess] = React.useState("");
 
   function body() {
     return {
@@ -34,9 +35,14 @@ function Login() {
         console.log(json);
         if(success) {
           navigate('/mainpage')
+        } else {
+          setMess(json.errors[0].message);
         }
       })
-      .catch((err) => console.log(err));
+      .catch(
+        (err) => {console.log(err);
+        }
+      );
   }
 
   return (
@@ -59,7 +65,7 @@ function Login() {
               autoComplete="current-password"
               variant="filled"
               onChange={(e) => setPassword(e.target.value)}
-            />
+            /><span className={style.message}>{mess}</span>
             <Box
               sx={{
                 display: "flex",

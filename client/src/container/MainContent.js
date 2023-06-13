@@ -4,39 +4,42 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { icon } from "@fortawesome/fontawesome-svg-core/import.macro";
 import Search from "../components/Search";
 import User from "../components/User";
-import {Routes, Route} from 'react-router-dom';
+import {Routes, Route, Outlet} from 'react-router-dom';
 import Chart from "../pages/chart/Chart";
 import Home from "../pages/home/Home";
 import Registration from "../pages/registration/Registration";
 import Signup from "../pages/signup/signup";
+import {useState, useEffect} from 'react';
 export default function MainContent() {
-  const username = "kien";
+  const [username,setUsername] = useState('');
   const url =
     "https://www.falstaff-travel.com/wp-content/uploads/2022/03/shutterstock_1253799112.jpg";
+  function getUserName() {
+    fetch('http://localhost:5010/account/loggedInUser',
+    {      credentials: "include",
+    }).then(res => res.json())
+    .then(res => setUsername(res.user.userName))
+  }
+  useEffect(() => {
+    getUserName()
+  }, [])
   return (
     <>
-
       <div className={styles.MainContent}>
       <div className={styles.Header}>
         <Search></Search>
-        <div>
+        <div >
           <IconButton>
             <FontAwesomeIcon icon={icon({ name: "bell" })} />
           </IconButton>
-          <User username={username} src={url}></User>
+          <User username={username} src={url} ></User>
         </div>
       </div>
-      <div className={styles.Body}>
-        {/* <Chart/> */}
-        <Routes >
-          <Route path="/mainpage/home" element={<Home/>}/>
-          <Route path="/mainpage/chart"element={<Chart/>}/>
-          <Route path="/mainpage/registration" element={<Registration/>}/>
-          <Route path="/mainpage/RegistAccount" element={<Signup/>}/>
-        </Routes>
+      <div className={styles.Body} >
+        <Outlet/>
       </div>
     </div>
   </>
-    
   );
 }
+
