@@ -14,7 +14,7 @@ class AccountController {
       }
 
       try {
-        const regCenter = await RegCenter.findOrCreate({
+        const regCenter = await RegCenter.create({
           name: req.body.center.name,
         });
 
