@@ -13,11 +13,13 @@ router.get(
   RegistrationController.getAll()
 );
 
-router.post("/", RegistrationController.create());
+router.get("/regRecord", auth, RegistrationController.getRecord());
+
+router.post("/", auth, RegistrationController.create());
 
 router.get("/:id", auth, RegistrationController.findById());
 
-router.patch("/:id", RegistrationController.update());
+// router.patch("/:id", RegistrationController.update());
 
 // router.delete("/:id", RegistrationController.delete());
 
