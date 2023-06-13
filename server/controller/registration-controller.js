@@ -45,14 +45,19 @@ class RegistrationController {
     return async (req, res, next) => {
       if (req.userData.isAdmin || req.userData.RegCenterId) {
         const where = {};
-        const { sDate, eDate } = req.query;
+        const { sDate, eDate, type } = req.query;
         if (req.userData.RegCenterId)
           where.RegCenterId = req.userData.RegCenterId;
 
-        const page = req.query.page ? parseInt(req.query.page) : 1;
-        const size = req.query.size ? parseInt(req.query.size) : 3;
-        if (sDate && eDate) {
+        const page = req.query.page ? parseInt(req.query.page) : null;
+        const size = req.query.size ? parseInt(req.query.size) : null;
+        if (sDate && eDate && type === "hetHan") {
           where.ngayHetHan = {
+            [Sequelize.Op.between]: [Date.parse(sDate), Date.parse(eDate)],
+          };
+        }
+        if (sDate && eDate && type === "dangKy") {
+          where.createdAt = {
             [Sequelize.Op.between]: [Date.parse(sDate), Date.parse(eDate)],
           };
         }
@@ -60,13 +65,12 @@ class RegistrationController {
           where,
           offset: (page - 1) * size,
           limit: size,
-          distinct: true,
         });
 
         res.status(200).json({
           success: true,
           data: rows,
-          total: rows.length,
+          total: count,
         });
       }
     };
@@ -100,6 +104,12 @@ class RegistrationController {
           });
           if (!car) {
             car = await Car.create({
+              ngayCapXe: req.body.car.ngayCapXe,
+              hangXe: req.body.car.hangXe,
+              tenXe: req.body.car.tenXe,
+              soKhung: req.body.car.soKhung,
+              soMay: req.body.car.soMay,
+              mucDich: req.body.car.mucDich,
               OwnerId: req.body.owner.id,
               bienSo: req.body.car.bienSo,
               ngayCapXe: req.body.car.ngayCapXe,

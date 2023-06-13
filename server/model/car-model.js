@@ -9,20 +9,20 @@ const Car = sequelize.define("Car", {
     unique: true,
   },
 
-  soMay: {
+  hangXe: {
     type: DataTypes.CHAR,
     defaultValue: "0",
     allowNull: false,
   },
 
-  loaiXe: {
+  tenXe: {
     defaultValue: "0",
     type: DataTypes.CHAR,
     allowNull: false,
   },
 
-  hieuXe: {
-    type: DataTypes.TEXT,
+  soKhung: {
+    type: DataTypes.CHAR,
     defaultValue: "0",
     allowNull: false,
   },
@@ -31,6 +31,17 @@ const Car = sequelize.define("Car", {
     type: DataTypes.DATE,
     defaultValue: "2023-01-01",
     allowNull: false,
+  },
+
+  soMay: {
+    type: DataTypes.CHAR,
+    defaultValue: "0",
+    allowNull: false,
+  },
+
+  mucDich: {
+    type: DataTypes.TEXT,
+    defaultValue: "0",
   },
 });
 
