@@ -29,13 +29,20 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Pagination from "@mui/material/Pagination";
+import { format, parseISO } from 'date-fns';
 
 function createData(
   registrationDate,
   centerCode,
   centerName,
   carPlate,
-  ownerId
+  ownerId,
+  carCompany,
+  carName,
+  pickUpDate,
+  carVIN,
+  carEN,
+  purpose
 ) {
   return {
     registrationDate,
@@ -45,12 +52,12 @@ function createData(
     ownerId,
     carDetails: [
       {
-        carCompany: "Honda",
-        carName: "HR-V 1.5 RS Đen",
-        pickUpDate: "2023-04-16",
-        carVIN: "19UUA65604L000000",
-        carEN: "L15A1234567",
-        purpose: "Xe tư nhân",
+        carCompany: carCompany,
+        carName: carName,
+        pickUpDate: pickUpDate,
+        carVIN: carVIN,
+        carEN: carEN,
+        purpose: purpose,
       },
     ],
   };
@@ -244,12 +251,9 @@ function Row(props) {
         <TableCell align="right">{row.centerName}</TableCell>
         <TableCell align="right">{row.carPlate}</TableCell>
         <TableCell align="right">{row.ownerId}</TableCell>
-        <TableCell align="right">
-          <ModalEdit></ModalEdit>
-        </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Typography variant="h6" gutterBottom component="div">
@@ -325,30 +329,56 @@ Row.propTypes = {
   }).isRequired,
 };
 
-const rows = [
-  createData("2023-01-23", "ct01", "TTĐK Hà Nội", "51A-1234", "3312344567"),
-  createData("2023-01-16", "ct02", "TTĐK Thanh Hóa", "80G-9733", "7723477811"),
-  createData("2023-01-30", "ct03", "TTĐK Bắc Ninh", "51B-01234", "1312284567"),
-  createData("2023-01-09", "ct04", "TTĐK Nghệ An", "TP-12345", "6812344602"),
-  createData("2023-01-03", "ct05", "TTĐK Hà Tĩnh", "68A80", "2956744563"),
-];
-
 export default function RegistrationTable() {
-
   const [page, setPage] = React.useState(1);
+  const [numberOfPages, setNumberOfPages] = React.useState(1);
+  const [rows, setRows] = React.useState([]);
 
   const handlePageChange = (event, value) => {
     setPage(value);
-    fetch(`http://localhost:5000/registration?page=${value}&per_page=5`, {
-      method: "GET",
-      headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlck5hbWUiOiJhZG1pbiIsImlzQWRtaW4iOnRydWUsImNyZWF0ZWRBdCI6IjIwMjMtMDYtMTJUMTE6NDQ6MjguMDAwWiIsInVwZGF0ZWRBdCI6IjIwMjMtMDYtMTJUMTE6NDQ6MjguMDAwWiIsIlJlZ0NlbnRlcklkIjpudWxsLCJpYXQiOjE2ODY1Nzg3MTIsImV4cCI6MTY4OTE3MDcxMn0.jyTm3XWj5dyj4WUzccmF4pmwAWHD-PflDGFOrP4J6g8"
-      },
+    console.log(value);
+    fetch(`http://localhost:5000/registration?page=${value}&size=5`, {
+      credentials: "include",
     })
       .then((response) => response.json())
-      .then((data) => console.log(data));
+      .then((data) => updatePageData(data));
   };
+
+  function updatePageData(data) {
+    let pages = data.total;
+    if(pages % 5 == 0) {
+      setNumberOfPages(pages/5);
+    } else {
+      setNumberOfPages(Math.ceil(pages/5));
+    }
+    console.log(data.data);
+    let tmpRows = [];
+    for (let i = 0; i < data.data.length; i++) {
+      let tmp = data.data[i];
+      let regCenter = tmp.RegCenter, regId, regName;
+      if(regCenter == null) {
+        regId="admin"
+        regName="admin"
+      } else {
+        regId=regCenter.id;
+        regName=regCenter.name;
+      }
+      tmpRows[i] = createData(
+        String(format(parseISO(tmp.ngayHetHan), 'dd-MM-yyyy')),
+        regId,
+        regName,
+        tmp.Car.bienSo,
+        tmp.OwnerId,
+        tmp.Car.hangXe,
+        tmp.Car.tenXe,
+        tmp.Car.ngayCapXe,
+        tmp.Car.soKhung,
+        tmp.Car.soMay,
+        tmp.Car.mucDich
+      );
+    }
+    setRows(tmpRows);
+  }
 
   return (
     <>
@@ -358,7 +388,7 @@ export default function RegistrationTable() {
             <TableRow>
               <TableCell />
               <TableCell>
-                <b>Ngày đăng kiểm</b>
+                <b>Ngày hết hạn</b>
               </TableCell>
               <TableCell align="right">
                 <b>Mã trung tâm</b>
@@ -372,9 +402,6 @@ export default function RegistrationTable() {
               <TableCell align="right">
                 <b>CMND/CCCD chủ xe</b>
               </TableCell>
-              <TableCell align="right">
-                <b>Chỉnh sửa</b>
-              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -386,7 +413,7 @@ export default function RegistrationTable() {
       </TableContainer>
 
       <Pagination
-        count={10}
+        count={numberOfPages}
         page={page}
         sx={{ display: "flex", justifyContent: "center", p: 1, m: 1 }}
         onChange={handlePageChange}

@@ -43,8 +43,6 @@ function Signup() {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlck5hbWUiOiJhZG1pbiIsImlzQWRtaW4iOnRydWUsImNyZWF0ZWRBdCI6IjIwMjMtMDYtMDVUMDg6MzM6NDMuMDAwWiIsInVwZGF0ZWRBdCI6IjIwMjMtMDYtMDVUMDg6MzM6NDMuMDAwWiIsIlJlZ0NlbnRlcklkIjpudWxsLCJpYXQiOjE2ODY0MjM4NTYsImV4cCI6MTY4OTAxNTg1Nn0.3bI75xRmquZHDtSWyGpkrihFlLyqhfigyosJY6D9ZeM",
       },
       body: JSON.stringify(body()),
       cache: "default",

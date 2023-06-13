@@ -18,7 +18,7 @@ function LineChart() {
     
           },
           {
-            label: "Số lượng xe sẽ hết hạn",
+            label: "Số lượng xe hết hạn",
             data: registeredCarData.map((data) => data.expiredCar),
             backgroundColor: ['red'],
             borderColor: "black",
@@ -27,9 +27,11 @@ function LineChart() {
           },
         ],
     });
+
+
     
     return (
-        <div style={{width: 400}}>
+        <div style={{width: 500, marginTop: 50}}>
             <Line data={carData}></Line>
         </div>
     )

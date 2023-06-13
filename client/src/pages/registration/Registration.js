@@ -79,6 +79,11 @@ function ModalCreate() {
       },
       car: {
         bienSo: carPlate,
+        hangXe: carCompany,
+        tenXe: carName,
+        soKhung: carVIN,
+        soMay: carEN,
+        mucDich: purpose,
         ngayCapXe: addDays(pickUpDate, 1),
         ownerId: ownerId,
       },
@@ -91,6 +96,9 @@ function ModalCreate() {
   }
 
   function handleCreateClick() {
+
+    handleClose();
+
     fetch("http://localhost:5000/registration", {
       method: "POST",
       credentials: "include",

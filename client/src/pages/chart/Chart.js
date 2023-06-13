@@ -6,8 +6,7 @@ import styles from "./Chart.module.css";
 function Chart() {
     return (
         <div className={styles.Chart}>
-            <LineChart></LineChart>
-            <BarChart></BarChart>
+            <h1>Thống kê và dự đoán xe sẽ hết hạn trong tháng</h1>
             <PieChart></PieChart>
         </div>
     );

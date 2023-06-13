@@ -12,9 +12,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import Pagination from "@mui/material/Pagination";
+import { format, parseISO } from "date-fns";
 
 import { useState } from "react";
-import { registrationCenterData } from "../sampleData/sampleData";
 
 const style = {
   position: "absolute",
@@ -29,38 +30,170 @@ const style = {
 };
 
 function PieChart() {
-  const [centerData, setCenterData] = useState({
-    labels: registrationCenterData.map((data) => data.name),
+  const [pieData, setPieData] = useState([
+    {
+      name: "Click để xem",
+      total: 1,
+    },
+    {
+      name: "Double click để xem dự đoán",
+      total: 0,
+    },
+  ]);
+  const [registTotal, setRegistTotal] = useState({});
+  const [expiredTotal, setExpiredTotal] = useState({});
+
+  const [inMonthData, setInMonthData] = useState({
+    labels: pieData.map((data) => data.name),
     datasets: [
       {
-        label: "Số lượng khách hàng",
-        data: registrationCenterData.map((data) => data.customer),
-        backgroundColor: ["#12CBC4", "#1289A7", "#0652DD", "#1B1464"],
+        label: "",
+        data: pieData.map((data) => data.total),
+        backgroundColor: ["#a29bfe"],
         borderColor: "black",
         borderWidth: 1,
       },
     ],
   });
 
+  React.useEffect(() => {
+    getRegistTotal();
+    getExpiredTotal();
+  }, []);
+
+  function pushPieData() {
+    let tmp = [];
+    tmp[0] = registTotal;
+    tmp[1] = expiredTotal;
+    setInMonthData({
+      labels: tmp.map((data) => data.name),
+      datasets: [
+        {
+          label: "Số lượng xe",
+          data: tmp.map((data) => data.total),
+          backgroundColor: ["#12CBC4", "#1B1464"],
+          borderColor: "black",
+          borderWidth: 1,
+        },
+      ],
+    });
+  }
+
+  async function getRegistTotal() {
+    let month = new Date(Date.now()).getMonth() + 1;
+    let year = new Date(Date.now()).getFullYear();
+    let stringMonth;
+    if (month < 10) {
+      stringMonth = "0" + month;
+    } else {
+      stringMonth = "" + month;
+    }
+    fetch(
+      `http://localhost:5000/registration/regRecord?sDate=${year}-${stringMonth}-01&eDate=${year}-${stringMonth}-28&type=dangKy`,
+      {
+        credentials: "include",
+      }
+    )
+      .then((response) => response.json())
+      .then((data) =>
+        setRegistTotal({
+          name: `Số lượng xe đăng kiểm trong tháng ${month}`,
+          total: data.total,
+        })
+      );
+  }
+
+  async function getExpiredTotal() {
+    let month = new Date(Date.now()).getMonth() + 1;
+    let year = new Date(Date.now()).getFullYear();let stringMonth;
+    if (month < 10) {
+      stringMonth = "0" + month;
+    } else {
+      stringMonth = "" + month;
+    }
+    fetch(
+      `http://localhost:5000/registration/regRecord?sDate=${year}-${
+        stringMonth
+      }-01&eDate=${year}-${stringMonth}-28&type=hetHan`,
+      {
+        credentials: "include",
+      }
+    )
+      .then((response) => response.json())
+      .then((data) =>
+        setExpiredTotal({
+          name: `Số lượng xe hết hạn trong tháng ${month}`,
+          total: data.total,
+        })
+      );
+  }
+
   function createData(carPlate, ownerId, registrationDate, expirationDate) {
     return { carPlate, ownerId, registrationDate, expirationDate };
   }
 
-  const rows = [
-    createData("51A-1234", "3312344567", "2023-01-23", "2025-01-23"),
-    createData("80G-9733", "7723477811", "2023-01-18", "2025-01-18"),
-    createData("51B-01234", "1312284567", "2023-01-05", "2025-01-05"),
-    createData("TP-12345", "6812344602", "2023-01-05", "2025-01-05"),
-    createData("68A80", "2956744563", "2023-01-29", "2025-01-29"),
-  ];
+  const [rows, setRows] = React.useState([]);
 
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => {
+    setOpen(true);
+  };
   const handleClose = () => setOpen(false);
 
+  const [page, setPage] = React.useState(1);
+  const [numberOfPages, setNumberOfPages] = React.useState(1);
+
+  const handlePageChange = (event, value) => {
+    setPage(value);
+    let month = new Date(Date.now()).getMonth() + 1;
+    let year = new Date(Date.now()).getFullYear();
+    let stringMonth;
+    if (month < 10) {
+      stringMonth = "0" + month;
+    } else {
+      stringMonth = "" + month;
+    }
+    fetch(
+      `http://localhost:5000/registration/regRecord?sDate=${year}-${
+        stringMonth
+      }-01&eDate=${year}-${stringMonth}-28&page=${value}&size=5&type=hetHan`,
+      {
+        credentials: "include",
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => updatePageData(data));
+  };
+
+  function updatePageData(data) {
+    let pages = data.total;
+    if (pages % 5 == 0) {
+      setNumberOfPages(pages / 5);
+    } else {
+      setNumberOfPages(Math.ceil(pages / 5));
+    }
+    console.log(data.data);
+    let tmpRows = [];
+    for (let i = 0; i < data.data.length; i++) {
+      let tmp = data.data[i];
+      tmpRows[i] = createData(
+        tmp.CarBienSo,
+        tmp.OwnerId,
+        String(format(parseISO(tmp.createdAt), "dd-MM-yyyy")),
+        String(format(parseISO(tmp.ngayHetHan), "dd-MM-yyyy"))
+      );
+    }
+    setRows(tmpRows);
+  }
+
   return (
-    <div style={{ width: 500 }}>
-      <Pie data={centerData} id="pieChart" onDoubleClick={handleOpen}></Pie>
+    <div style={{ width: 590, marginTop: 50 }}>
+      <Pie
+        data={inMonthData}
+        id="pieChart"
+        onDoubleClick={handleOpen}
+        onClick={pushPieData}
+      ></Pie>
       <Modal
         open={open}
         onClose={handleClose}
@@ -106,6 +239,19 @@ function PieChart() {
               </TableBody>
             </Table>
           </TableContainer>
+          <Pagination
+            count={numberOfPages}
+            page={page}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              p: 1,
+              m: 1,
+              pb: 0,
+              mb: 0,
+            }}
+            onChange={handlePageChange}
+          ></Pagination>
         </Box>
       </Modal>
     </div>
