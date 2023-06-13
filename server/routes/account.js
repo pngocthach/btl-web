@@ -9,7 +9,7 @@ router.post("/login", Account.login());
 
 router.patch("/update/:id", checkAuth, Account.update());
 
-router.get("/loggedInUser", Account.loggedInUser());
+router.get("/loggedInUser", checkAuth, Account.loggedInUser());
 
 router.get("/getAll", checkAuth, Account.getAll());
 
