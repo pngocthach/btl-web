@@ -17,6 +17,7 @@
     "@testing-library/user-event": "^13.5.0",
     "babel-plugin-macros": "^3.1.0",
     "chart.js": "^4.3.0",
+    "date-fns": "^2.30.0",
     "dayjs": "^1.11.7",
     "http-proxy-middleware": "^2.0.6",
     "localforage": "^1.10.0",

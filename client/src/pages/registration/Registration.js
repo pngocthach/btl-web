@@ -14,6 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { addDays } from "date-fns";
 
 import RegistrationTable from "../../components/RegistrationTable";
 
@@ -36,17 +37,109 @@ const buttonStyle = {
 };
 
 function ModalCreate() {
-  var abc = true;
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const handleProvinceChange = (event) => {
-    if (event.target.value !== "") {
-      // document.getElementById("demo-simple-select-filled").setAttribute(disabled=false);
-    }
+
+  const [province, setProvince] = React.useState("");
+  const [district, setDistrict] = React.useState("");
+  const [ward, setWard] = React.useState("");
+  const [specificAddress, setSpecificAddress] = React.useState("");
+  const [phone, setPhone] = React.useState("");
+  const [dob, setDob] = React.useState("");
+  const [lastName, setLastName] = React.useState(""); //Tên họ
+  const [firstName, setFirstName] = React.useState("");
+  const [purpose, setPurPose] = React.useState("");
+  const [carVIN, setCarVIN] = React.useState("");
+  const [carEN, setCarEN] = React.useState("");
+  const [pickUpDate, setPickUpDate] = React.useState("");
+  const [carCompany, setCarCompany] = React.useState("");
+  const [carName, setCarName] = React.useState("");
+  const [registrationDate, setRegistrationDate] = React.useState({});
+  const [carPlate, setCarPlate] = React.useState("");
+  const [ownerId, setOwnerId] = React.useState("");
+
+  const [provinceState, setProvinceState] = React.useState([]);
+  const [districtState, setDistrictState] = React.useState([]);
+  const [wardState, setWardState] = React.useState([]);
+
+  const body = () => {
+    return {
+      owner: {
+        id: ownerId,
+        name: lastName + firstName,
+        phoneNum: phone,
+        dob: addDays(dob, 1),
+      },
+      address: {
+        thanhPho: province,
+        quan: district,
+        phuong: ward,
+        chiTiet: specificAddress,
+      },
+      car: {
+        bienSo: carPlate,
+        ngayCapXe: addDays(pickUpDate, 1),
+        ownerId: ownerId,
+      },
+      ngayHetHan: addDays(registrationDate, 1),
+    };
   };
-  const handleDistrictChange = (event) => {};
-  const handleWardChange = (event) => {};
+
+  function extractDate(date) {
+    return date.$d;
+  }
+
+  function handleCreateClick() {
+    fetch("http://localhost:5000/registration", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body()),
+      cache: "default",
+    })
+      .then((response) => response.json())
+      .then((json) => console.log(json))
+      .catch((err) => console.log(err));
+  }
+
+  const getProvinceData = () => {
+    fetch("https://provinces.open-api.vn/api/p/")
+      .then((response) => response.json())
+      .then((data) => setProvinceState(data));
+  };
+
+  React.useEffect(() => getProvinceData(), []);
+
+  const handleProvinceOnChange = (event) => {
+    setProvince(event.target.value);
+    let index = 0;
+    for (index; index < provinceState.length; index++) {
+      if (provinceState[index].name == event.target.value) {
+        break;
+      }
+    }
+    let path = `https://provinces.open-api.vn/api/d/search/?q=*&p=${provinceState[index].code}`;
+    fetch(path)
+      .then((response) => response.json())
+      .then((data) => setDistrictState(data));
+  };
+
+  const handleDistrictOnChange = (event) => {
+    setDistrict(event.target.value);
+    let index = 0;
+    for (index; index < districtState.length; index++) {
+      if (districtState[index].name == event.target.value) {
+        break;
+      }
+    }
+    let path = `https://provinces.open-api.vn/api/w/search/?q=*&d=${districtState[index].code}`;
+    fetch(path)
+      .then((response) => response.json())
+      .then((data) => setWardState(data));
+  };
 
   return (
     <div>
@@ -77,43 +170,90 @@ function ModalCreate() {
                 id="filled-basic"
                 label="CMND/CCCD chủ xe"
                 variant="filled"
+                onChange={(e) => setOwnerId(e.target.value)}
               />
               <TextField
                 id="filled-basic"
                 label="Biển số xe đăng kiểm"
                 variant="filled"
+                onChange={(e) => setCarPlate(e.target.value)}
               />
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker label="Ngày đăng kiểm" />
+                <DatePicker
+                  label="Ngày hết hạn đăng kiểm"
+                  onChange={(date) => setRegistrationDate(extractDate(date))}
+                />
               </LocalizationProvider>
             </Stack>
             <Stack spacing={2}>
               <TableCell>
                 <b>Thông tin xe</b>
               </TableCell>
-              <TextField id="filled-basic" label="Hãng xe" variant="filled" />
-              <TextField id="filled-basic" label="Tên xe" variant="filled" />
+              <TextField
+                id="filled-basic"
+                label="Hãng xe"
+                variant="filled"
+                onChange={(e) => setCarCompany(e.target.value)}
+              />
+              <TextField
+                id="filled-basic"
+                label="Tên xe"
+                variant="filled"
+                onChange={(e) => setCarName(e.target.value)}
+              />
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker label="Ngày cấp xe" />
+                <DatePicker
+                  label="Ngày cấp xe"
+                  onChange={(date) => setPickUpDate(extractDate(date))}
+                />
               </LocalizationProvider>
-              <TextField id="filled-basic" label="Số khung" variant="filled" />
-              <TextField id="filled-basic" label="Số máy" variant="filled" />
+              <TextField
+                id="filled-basic"
+                label="Số khung"
+                variant="filled"
+                onChange={(e) => setCarVIN(e.target.value)}
+              />
+              <TextField
+                id="filled-basic"
+                label="Số máy"
+                variant="filled"
+                onChange={(e) => setCarEN(e.target.value)}
+              />
               <TextField
                 id="filled-basic"
                 label="Mục đích sử dụng"
                 variant="filled"
+                onChange={(e) => setPurPose(e.target.value)}
               />
             </Stack>
             <Stack spacing={2}>
               <TableCell>
                 <b>Thông tin chủ</b>
               </TableCell>
-              <TextField id="filled-basic" label="Họ" variant="filled" />
-              <TextField id="filled-basic" label="Tên" variant="filled" />
+              <TextField
+                id="filled-basic"
+                label="Họ"
+                variant="filled"
+                onChange={(e) => setLastName(e.target.value)}
+              />
+              <TextField
+                id="filled-basic"
+                label="Tên"
+                variant="filled"
+                onChange={(e) => setFirstName(e.target.value)}
+              />
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker label="Ngày sinh" />
+                <DatePicker
+                  label="Ngày sinh"
+                  onChange={(date) => setDob(extractDate(date))}
+                />
               </LocalizationProvider>
-              <TextField id="filled-basic" label="SĐT" variant="filled" />
+              <TextField
+                id="filled-basic"
+                label="SĐT"
+                variant="filled"
+                onChange={(e) => setPhone(e.target.value)}
+              />
               <FormControl variant="filled">
                 <InputLabel id="demo-simple-select-filled-label">
                   Tỉnh
@@ -121,13 +261,13 @@ function ModalCreate() {
                 <Select
                   labelId="demo-simple-select-filled-label"
                   id="demo-simple-select-filled"
+                  onChange={handleProvinceOnChange}
                 >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value={"Hà Nội"}>Hà Nội</MenuItem>
-                  <MenuItem value={"Thanh Hóa"}>Thanh Hóa</MenuItem>
-                  <MenuItem value={"Bắc Ninh"}>Bắc Ninh</MenuItem>
+                  {provinceState.map(({ name }, index) => (
+                    <MenuItem key={index} value={name}>
+                      {name}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
               <FormControl variant="filled">
@@ -137,14 +277,13 @@ function ModalCreate() {
                 <Select
                   labelId="demo-simple-select-filled-label"
                   id="demo-simple-select-filled"
-                  disabled
+                  onChange={handleDistrictOnChange}
                 >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value={"Nam Từ Liêm"}>Nam Từ Liêm</MenuItem>
-                  <MenuItem value={"Hoằng Hóa"}>Hoằng Hóa</MenuItem>
-                  <MenuItem value={"Bắc Linh"}>Bắc Linh</MenuItem>
+                  {districtState.map(({ name }, index) => (
+                    <MenuItem key={index} value={name}>
+                      {name}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
               <FormControl variant="filled">
@@ -154,20 +293,20 @@ function ModalCreate() {
                 <Select
                   labelId="demo-simple-select-filled-label"
                   id="demo-simple-select-filled"
-                  disabled
+                  onChange={(e) => setWard(e.target.value)}
                 >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value={"Mỹ Đình 1"}>Mỹ Đình 1</MenuItem>
-                  <MenuItem value={"Hoằng Hóa"}>Hoằng Hóa</MenuItem>
-                  <MenuItem value={"Nắc Linh"}>Nắc Linh</MenuItem>
+                  {wardState.map(({ name }, index) => (
+                    <MenuItem key={index} value={name}>
+                      {name}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
               <TextField
                 id="filled-basic"
-                label="Địa chỉ cụ thể"
+                label="Số nhà/Đường"
                 variant="filled"
+                onChange={(e) => setSpecificAddress(e.target.value)}
               />
             </Stack>
           </Stack>
@@ -176,6 +315,7 @@ function ModalCreate() {
               variant="contained"
               sx={buttonStyle}
               startIcon={<AddCircleIcon />}
+              onClick={handleCreateClick}
             >
               Tạo đơn đăng kiểm
             </Button>

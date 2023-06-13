@@ -14,8 +14,8 @@ import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import EditIcon from "@mui/icons-material/Edit";
-import SaveIcon from '@mui/icons-material/Save';
-import DeleteIcon from '@mui/icons-material/Delete';
+import SaveIcon from "@mui/icons-material/Save";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Container from "@mui/material/Container";
@@ -28,6 +28,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import Pagination from "@mui/material/Pagination";
 
 function createData(
   registrationDate,
@@ -74,17 +75,9 @@ const buttonStyle = {
 };
 
 function ModalEdit() {
-  var abc = true;
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const handleProvinceChange = (event) => {
-    if (event.target.value !== "") {
-      // document.getElementById("demo-simple-select-filled").setAttribute(disabled=false);
-    }
-  };
-  const handleDistrictChange = (event) => {};
-  const handleWardChange = (event) => {};
 
   return (
     <div>
@@ -341,38 +334,63 @@ const rows = [
 ];
 
 export default function RegistrationTable() {
+
+  const [page, setPage] = React.useState(1);
+
+  const handlePageChange = (event, value) => {
+    setPage(value);
+    fetch(`http://localhost:5000/registration?page=${value}&per_page=5`, {
+      method: "GET",
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlck5hbWUiOiJhZG1pbiIsImlzQWRtaW4iOnRydWUsImNyZWF0ZWRBdCI6IjIwMjMtMDYtMTJUMTE6NDQ6MjguMDAwWiIsInVwZGF0ZWRBdCI6IjIwMjMtMDYtMTJUMTE6NDQ6MjguMDAwWiIsIlJlZ0NlbnRlcklkIjpudWxsLCJpYXQiOjE2ODY1Nzg3MTIsImV4cCI6MTY4OTE3MDcxMn0.jyTm3XWj5dyj4WUzccmF4pmwAWHD-PflDGFOrP4J6g8"
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+  };
+
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            <TableCell />
-            <TableCell>
-              <b>Ngày đăng kiểm</b>
-            </TableCell>
-            <TableCell align="right">
-              <b>Mã trung tâm</b>
-            </TableCell>
-            <TableCell align="right">
-              <b>Tên trung tâm</b>
-            </TableCell>
-            <TableCell align="right">
-              <b>Biển số xe</b>
-            </TableCell>
-            <TableCell align="right">
-              <b>CMND/CCCD chủ xe</b>
-            </TableCell>
-            <TableCell align="right">
-              <b>Chỉnh sửa</b>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <Row key={row.name} row={row} />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+      <TableContainer component={Paper}>
+        <Table aria-label="collapsible table">
+          <TableHead>
+            <TableRow>
+              <TableCell />
+              <TableCell>
+                <b>Ngày đăng kiểm</b>
+              </TableCell>
+              <TableCell align="right">
+                <b>Mã trung tâm</b>
+              </TableCell>
+              <TableCell align="right">
+                <b>Tên trung tâm</b>
+              </TableCell>
+              <TableCell align="right">
+                <b>Biển số xe</b>
+              </TableCell>
+              <TableCell align="right">
+                <b>CMND/CCCD chủ xe</b>
+              </TableCell>
+              <TableCell align="right">
+                <b>Chỉnh sửa</b>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <Row key={row.name} row={row} />
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      <Pagination
+        count={10}
+        page={page}
+        sx={{ display: "flex", justifyContent: "center", p: 1, m: 1 }}
+        onChange={handlePageChange}
+      ></Pagination>
+    </>
   );
 }

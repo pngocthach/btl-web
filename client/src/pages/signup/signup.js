@@ -10,7 +10,6 @@ import Select from "@mui/material/Select";
 import React, { useEffect } from "react";
 import { Button } from "@mui/material";
 import { Box } from "@mui/material";
-import FormHelperText from "@mui/material/FormHelperText";
 
 function Signup() {
   const [userName, setUserName] = React.useState("");
@@ -55,19 +54,45 @@ function Signup() {
       .catch((err) => console.log(err));
   }
 
-  const [state, setState] = React.useState([]);
+  const [provinceState, setProvinceState] = React.useState([]);
+  const [districtState, setDistrictState] = React.useState([]);
+  const [wardState, setWardState] = React.useState([]);
 
-  const getData = () => {
+  const getProvinceData = () => {
     fetch("https://provinces.open-api.vn/api/p/")
       .then((response) => response.json())
-      .then((data) => setState(data));
+      .then((data) => setProvinceState(data));
   };
 
-  React.useEffect(() => getData(), []);
+  React.useEffect(() => getProvinceData(), []);
 
-  const users = state.map((province, key) => {
-    <MenuItem>{province.name}</MenuItem>;
-  });
+  const handleProvinceOnChange = (event) => {
+    setProvince(event.target.value);
+    let index = 0;
+    for (index; index < provinceState.length; index++) {
+      if (provinceState[index].name == event.target.value) {
+        break;
+      }
+    }
+    let path = `https://provinces.open-api.vn/api/d/search/?q=*&p=${provinceState[index].code}`;
+    fetch(path)
+      .then((response) => response.json())
+      .then((data) => setDistrictState(data));
+  };
+
+  const handleDistrictOnChange = (event) => {
+    setDistrict(event.target.value);
+    let index = 0;
+    for (index; index < districtState.length; index++) {
+      if (districtState[index].name == event.target.value) {
+        break;
+      }
+    }
+    let path = `https://provinces.open-api.vn/api/w/search/?q=*&d=${districtState[index].code}`;
+    fetch(path)
+      .then((response) => response.json())
+      .then((data) => setWardState(data));
+  };
 
   return (
     <div className={style.signup}>
@@ -111,9 +136,9 @@ function Signup() {
               <Select
                 labelId="demo-simple-select-filled-label"
                 id="demo-simple-select-filled"
-                onChange={(e) => setProvince(e.target.value)}
+                onChange={handleProvinceOnChange}
               >
-                {state.map(({ name }, index) => (
+                {provinceState.map(({ name }, index) => (
                   <MenuItem key={index} value={name}>
                     {name}
                   </MenuItem>
@@ -128,14 +153,14 @@ function Signup() {
               <Select
                 labelId="demo-simple-select-filled-label"
                 id="demo-simple-select-filled"
-                onChange={(e) => setDistrict(e.target.value)}
+                onChange={handleDistrictOnChange}
+                // disabled
               >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value={"Hà Nội"}>Ten</MenuItem>
-                <MenuItem value={"Hà Nội"}>Twenty</MenuItem>
-                <MenuItem value={"Hà Nội"}>Thirty</MenuItem>
+                {districtState.map(({ name }, index) => (
+                  <MenuItem key={index} value={name}>
+                    {name}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
 
@@ -147,13 +172,13 @@ function Signup() {
                 labelId="demo-simple-select-filled-label"
                 id="demo-simple-select-filled"
                 onChange={(e) => setWard(e.target.value)}
+                // disabled
               >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value={"Hà Nội"}>Ten</MenuItem>
-                <MenuItem value={"Hà Nội"}>Twenty</MenuItem>
-                <MenuItem value={"Hà Nội"}>Thirty</MenuItem>
+                {wardState.map(({ name }, index) => (
+                  <MenuItem key={index} value={name}>
+                    {name}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
             <TextField
@@ -162,6 +187,7 @@ function Signup() {
               autoComplete="current-password"
               variant="filled"
               onChange={(e) => setSpecificAddress(e.target.value)}
+              // disabled
             />
           </Stack>
         </Stack>

@@ -29,7 +29,7 @@ const Car = sequelize.define("Car", {
 
   ngayCapXe: {
     type: DataTypes.DATE,
-    defaultValue: "0",
+    defaultValue: "2023-01-01",
     allowNull: false,
   },
 });
