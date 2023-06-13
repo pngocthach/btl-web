@@ -371,7 +371,7 @@ export default function RegistrationTable() {
         tmp.OwnerId,
         tmp.Car.hangXe,
         tmp.Car.tenXe,
-        tmp.Car.ngayCapXe,
+        String(format(parseISO(tmp.Car.ngayCapXe), 'dd-MM-yyyy')),
         tmp.Car.soKhung,
         tmp.Car.soMay,
         tmp.Car.mucDich

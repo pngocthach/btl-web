@@ -1,5 +1,5 @@
 import style from "./login.module.css";
-
+import { useNavigate } from "react-router-dom";
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import { Stack } from "@mui/material";
@@ -9,6 +9,8 @@ import { Box } from "@mui/material";
 function Login() {
   const [userName, setUserName] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const navigate = useNavigate();
+  const [mess, setMess] = React.useState("");
 
   function body() {
     return {
@@ -28,8 +30,18 @@ function Login() {
       cache: "default",
     })
       .then((response) => response.json())
-      .then((json) => console.log(json))
-      .catch((err) => console.log(err));
+      .then((json) => {
+        const success = json.success;
+        console.log(json);
+        if (success) {
+          navigate("/mainpage");
+        } else {
+          setMess(json.errors[0].message);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   return (
@@ -53,6 +65,7 @@ function Login() {
               variant="filled"
               onChange={(e) => setPassword(e.target.value)}
             />
+            <span className={style.message}>{mess}</span>
             <Box
               sx={{
                 display: "flex",
