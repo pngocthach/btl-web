@@ -1,20 +1,8 @@
-const express = require("express");
-const cors = require("cors");
-const app = express();
+const http = require("http");
+const app = require("./app");
+const port = process.env.PORT || 5000;
+const server = http.createServer(app);
 
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-  })
-);
-
-//test
-app.get("/api", (req, res) => {
-  res.json({
-    test: [1, 2, 3],
-  });
-});
-
-app.listen(5000, () => {
-  console.log("server started on port 5000");
+server.listen(port, () => {
+  console.log(`Listening on port ${port}`);
 });
